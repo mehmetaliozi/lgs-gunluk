@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1F4E79">
+<title>LGS Hazırlık</title>
+<script>
+window.LGS_CONFIG = {
+  url: 'https://jymvuqitsvnhjudixjjy.supabase.co',
+  key: 'sb_publishable_gxi-fx69JCoxDOUL0eyOrA_glG1S6DK'
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="boot" style="font-family:system-ui,sans-serif;padding:40px 20px;text-align:center;color:#555">Yükleniyor…</div>
+<script>
+/* Uygulamanın kodu Supabase'ten yüklenir; düzeltmeler için bu dosyayı ve Netlify'ı değiştirmeye gerek yoktur. */
+(function(){
+  var url = LGS_CONFIG.url + '/storage/v1/object/public/app/app.js?v=' + Date.now();
+  function fail(msg){ document.getElementById('boot').innerHTML = msg + '<br><br><button onclick="location.reload()" style="padding:10px 18px;font-size:16px">Tekrar dene</button>'; }
+  if(!window.supabase){ fail('Bağlantı kurulamadı. İnternetinizi kontrol edin.'); return; }
+  fetch(url, { cache:'no-store' }).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function(code){ var s=document.createElement('script'); s.textContent=code; document.body.appendChild(s); })
+    .catch(function(){ fail('Uygulama yüklenemedi. İnternetinizi kontrol edin; sorun sürerse öğretmeninize haber verin.'); });
+})();
+</script>
+</body>
+</html>
