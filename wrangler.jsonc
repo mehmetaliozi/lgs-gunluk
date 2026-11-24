@@ -1,6 +1,7 @@
 {
   "name": "lgshocam",
   "compatibility_date": "2026-11-01",
+  "workers_dev": true,
   "build": {
     "command": "rm -rf site && mkdir site && cp -r index.html app img gunluk site/"
   },
