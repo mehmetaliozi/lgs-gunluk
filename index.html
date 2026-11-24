@@ -16,12 +16,15 @@ window.LGS_CONFIG = {
 <body>
 <div id="boot" style="font-family:system-ui,sans-serif;padding:40px 20px;text-align:center;color:#555">Yükleniyor…</div>
 <script>
-/* Uygulamanın kodu Supabase'ten yüklenir; düzeltmeler için bu dosyayı ve Netlify'ı değiştirmeye gerek yoktur. */
+/* Uygulamanın kodu önce sitenin kendi adresinden, olmazsa Supabase'ten yüklenir; düzeltmeler için bu dosyayı ve Netlify'ı değiştirmeye gerek yoktur. */
 (function(){
-  var url = LGS_CONFIG.url + '/storage/v1/object/public/app/app.js?v=' + Date.now();
+  var t = '?v=' + Date.now();
+  var own = /(^|\.)netlify\.app$|^localhost$|^127\./.test(location.hostname) ? null : '/app/app.js' + t;
+  var url = LGS_CONFIG.url + '/storage/v1/object/public/app/app.js' + t;
   function fail(msg){ document.getElementById('boot').innerHTML = msg + '<br><br><button onclick="location.reload()" style="padding:10px 18px;font-size:16px">Tekrar dene</button>'; }
   if(!window.supabase){ fail('Bağlantı kurulamadı. İnternetinizi kontrol edin.'); return; }
-  fetch(url, { cache:'no-store' }).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+  function get(u){ return fetch(u, { cache:'no-store' }).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); }); }
+  (own ? get(own).catch(function(){ return get(url); }) : get(url))
     .then(function(code){ var s=document.createElement('script'); s.textContent=code; document.body.appendChild(s); })
     .catch(function(){ fail('Uygulama yüklenemedi. İnternetinizi kontrol edin; sorun sürerse öğretmeninize haber verin.'); });
 })();
